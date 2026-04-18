@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS - Content Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 600px;
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .logo {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #667eea;
+            font-size: 45px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .description {
+            color: #888;
+            font-size: 16px;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+        
+        .feature {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .feature-title {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .feature-desc {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        
+        .btn {
+            padding: 15px 40px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.6);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-secondary:hover {
+            background: #f0f4ff;
+            transform: translateY(-3px);
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .copyright {
+            color: #667eea;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+            
+            h1 {
+                font-size: 32px;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">📚</div>
+        
+        <h1>Content Management System</h1>
+        <p class="subtitle">Professional CMS for Managing Your Content</p>
+        
+        <p class="description">
+            Create, edit, and manage your content efficiently. 
+            Collaborate with your team and maintain complete control over your data.
+        </p>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-title">✨ Easy to Use</div>
+                <div class="feature-desc">Intuitive interface designed for everyone</div>
+            </div>
+            <div class="feature">
+                <div class="feature-title">🔒 Secure</div>
+                <div class="feature-desc">Your data is protected with authentication</div>
+            </div>
+            <div class="feature">
+                <div class="feature-title">⚡ Fast</div>
+                <div class="feature-desc">Quick search and efficient management</div>
+            </div>
+            <div class="feature">
+                <div class="feature-title">📊 Analytics</div>
+                <div class="feature-desc">Track activities and content metrics</div>
+            </div>
+        </div>
+        
+        <div class="button-container">
+            <a href="login.html" class="btn btn-primary">Login Now</a>
+            <a href="#" class="btn btn-secondary">Learn More</a>
+        </div>
+        
+        <div class="footer">
+            <p>Build with ❤️ for Content Creators</p>
+            <div class="copyright">© 2026 Sinchana MS. All rights reserved.</div>
+        </div>
+    </div>
+    
+    <script>
+        window.onload = function() {
+            const role = localStorage.getItem('role');
+            if (role === 'admin') {
+                window.location.href = 'admin_dashboard.html';
+            } else if (role === 'user') {
+                window.location.href = 'user_dashboard.html';
+            }
+        }
+    </script>
+</body>
+</html>

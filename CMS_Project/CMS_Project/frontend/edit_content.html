@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Content - CMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+        
+        nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .nav-logo {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-info {
+            color: white;
+            text-align: right;
+        }
+        
+        .username {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .role-badge {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+        
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .breadcrumb {
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .header {
+            margin-bottom: 40px;
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .header-subtitle {
+            color: #999;
+            font-size: 16px;
+        }
+        
+        .form-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #667eea;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            color: #1565c0;
+            font-size: 14px;
+        }
+        
+        .metadata-box {
+            background: #f5f7fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .metadata-item {
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+        
+        .metadata-label {
+            color: #999;
+            font-weight: 600;
+            display: inline-block;
+            min-width: 120px;
+        }
+        
+        .metadata-value {
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        input[type="text"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 250px;
+            font-size: 14px;
+        }
+        
+        .character-count {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: flex-end;
+        }
+        
+        .btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.6);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-secondary:hover {
+            background: #f0f4ff;
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            background: white;
+            padding: 30px 40px;
+            text-align: center;
+            border-top: 1px solid #eee;
+            margin-top: 60px;
+        }
+        
+        .footer-text {
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .copyright {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <div class="nav-logo">📚 CMS</div>
+            <ul class="nav-links">
+                <li><a href="user_dashboard.html">Dashboard</a></li>
+                <li><a href="view_content.html">Content</a></li>
+                <li><a href="add_content.html">Create</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <div class="user-info">
+                <div class="username" id="navUsername">👤 User</div>
+                <div class="role-badge" id="roleBadge">Regular User</div>
+            </div>
+            <a href="profile.html" style="color: white; text-decoration: none; margin: 0 10px; font-weight: 600;">⚙️</a>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="view_content.html">← Back to Content</a>
+        </div>
+        
+        <div class="header">
+            <h1>✏️ Edit Content</h1>
+            <p class="header-subtitle">Update your content and publish changes</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="info-box">
+                ℹ️ You are editing <strong>Content #1</strong>. All changes will be saved to the database.
+            </div>
+            
+            <div class="metadata-box">
+                <div class="metadata-item">
+                    <span class="metadata-label">Created By:</span>
+                    <span class="metadata-value">admin</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Created Date:</span>
+                    <span class="metadata-value">2026-03-23</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Last Edited:</span>
+                    <span class="metadata-value">Just now</span>
+                </div>
+                <div class="metadata-item">
+                    <span class="metadata-label">Status:</span>
+                    <span class="metadata-value">Published</span>
+                </div>
+            </div>
+            
+            <form onsubmit="submitForm(event)">
+                <div class="form-group">
+                    <label for="title">Content Title *</label>
+                    <input 
+                        type="text" 
+                        id="title" 
+                        name="title" 
+                        value="Welcome to CMS"
+                        placeholder="Enter content title"
+                        required
+                        maxlength="255"
+                        onkeyup="updateTitleCount()"
+                    >
+                    <div class="character-count"><span id="titleCount">16</span>/255 characters</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Content Description *</label>
+                    <textarea 
+                        id="description" 
+                        name="description" 
+                        placeholder="Write your content here..."
+                        required
+                        onkeyup="updateDescCount()"
+                    >This is the first content in our system. A comprehensive guide to get started with our Content Management System.</textarea>
+                    <div class="character-count"><span id="descCount">126</span> characters</div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" name="category">
+                            <option value="general" selected>General</option>
+                            <option value="tech">Technology</option>
+                            <option value="business">Business</option>
+                            <option value="lifestyle">Lifestyle</option>
+                            <option value="education">Education</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" name="status">
+                            <option value="draft">Draft</option>
+                            <option value="published" selected>Published</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <a href="view_content.html" class="btn btn-secondary">Cancel</a>
+                    <button type="reset" class="btn btn-secondary">Reset</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <footer>
+        <p class="footer-text">CMS Content Management</p>
+        <p class="copyright">© 2026 Sinchana MS. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        window.onload = function() {
+            const role = localStorage.getItem('role');
+            const user = localStorage.getItem('user');
+            
+            if (!role) {
+                window.location.href = 'login.html';
+            }
+            
+            if (user) {
+                document.getElementById('navUsername').textContent = '👤 ' + user;
+            }
+            
+            if (role === 'admin') {
+                document.getElementById('roleBadge').textContent = 'Administrator';
+            }
+        }
+        
+        function updateTitleCount() {
+            document.getElementById('titleCount').textContent = document.getElementById('title').value.length;
+        }
+        
+        function updateDescCount() {
+            document.getElementById('descCount').textContent = document.getElementById('description').value.length;
+        }
+        
+        function submitForm(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('title').value.trim();
+            const description = document.getElementById('description').value.trim();
+            
+            if (!title || !description) {
+                alert('❌ Please fill in all required fields!');
+                return;
+            }
+            
+            if (title.length < 5) {
+                alert('❌ Title must be at least 5 characters long!');
+                return;
+            }
+            
+            if (description.length < 20) {
+                alert('❌ Description must be at least 20 characters long!');
+                return;
+            }
+            
+            alert('✅ Content updated successfully!');
+            setTimeout(() => window.location.href = 'view_content.html', 500);
+        }
+        
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('user');
+                localStorage.removeItem('role');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>
