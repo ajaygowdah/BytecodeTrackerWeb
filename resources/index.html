@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CUSTOM JVM BYTECODE ANALYZER - Upload</title>
+
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #0f172a 0%, #1a202c 100%);
+  color: white;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 50px;
+  padding: 30px 0;
+}
+
+h1 {
+  font-size: 2.5em;
+  color: #38bdf8;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 10px rgba(56, 189, 248, 0.2);
+}
+
+.subtitle {
+  color: #94a3b8;
+  font-size: 1.1em;
+}
+
+.card {
+  background: #1e293b;
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  border: 1px solid #334155;
+  margin-bottom: 30px;
+}
+
+.upload-section {
+  border: 3px dashed #38bdf8;
+  border-radius: 15px;
+  padding: 60px 40px;
+  text-align: center;
+  transition: all 0.3s ease;
+  background: rgba(56, 189, 248, 0.05);
+}
+
+.upload-section:hover {
+  border-color: #0ea5e9;
+  background: rgba(56, 189, 248, 0.1);
+  box-shadow: inset 0 0 20px rgba(56, 189, 248, 0.1);
+}
+
+.upload-icon {
+  font-size: 4em;
+  margin-bottom: 20px;
+}
+
+.upload-label {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #e2e8f0;
+}
+
+.file-input-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.file-input-label {
+  display: inline-block;
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+}
+
+.file-input-label:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(6, 182, 212, 0.3);
+}
+
+.file-name-display {
+  margin-top: 20px;
+  color: #cbd5e1;
+  font-size: 0.95em;
+  min-height: 30px;
+}
+
+.file-selected {
+  color: #22c55e;
+  font-weight: bold;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1.1em;
+  color: white;
+  margin-top: 30px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
+}
+
+button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+.info-section {
+  background: rgba(15, 23, 42, 0.5);
+  border-left: 4px solid #38bdf8;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 30px;
+}
+
+.info-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #38bdf8;
+}
+
+.info-text {
+  color: #cbd5e1;
+  line-height: 1.8;
+}
+
+.info-text li {
+  margin-left: 20px;
+  margin-bottom: 8px;
+}
+
+footer {
+  text-align: center;
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 1px solid #334155;
+  color: #94a3b8;
+}
+
+footer a {
+  color: #38bdf8;
+  text-decoration: none;
+  margin: 0 10px;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #0ea5e9;
+  text-decoration: underline;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.feature-card {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+
+.feature-icon {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.feature-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #e2e8f0;
+}
+
+.feature-description {
+  color: #94a3b8;
+  font-size: 0.9em;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+  <h1>📊 CUSTOM JVM BYTECODE ANALYZER</h1>
+  <p class="subtitle">Upload and analyze your Java bytecode files for security vulnerabilities</p>
+</div>
+
+<div class="card">
+  <form action="/upload" method="post" enctype="multipart/form-data" id="uploadForm">
+    <div class="upload-section">
+      <div class="upload-icon">📁</div>
+      <label class="upload-label">Select a .class file</label>
+      
+      <div class="file-input-wrapper">
+        <input type="file" name="file" id="file" accept=".class" required onchange="updateFileName()">
+        <label for="file" class="file-input-label">Choose File</label>
+      </div>
+      
+      <div class="file-name-display" id="fileDisplay">No file selected</div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-title">📌 What to Upload:</div>
+      <div class="info-text">
+        <ul>
+          <li>Java compiled class files (.class)</li>
+          <li>Maximum file size: 10 MB</li>
+          <li>Individual class files are recommended</li>
+        </ul>
+      </div>
+    </div>
+
+    <button type="submit">🔍 Scan Class</button>
+  </form>
+</div>
+
+<div class="features">
+  <div class="feature-card">
+    <div class="feature-icon">🔒</div>
+    <div class="feature-title">Security Analysis</div>
+    <div class="feature-description">Detect dangerous method calls and potential vulnerabilities</div>
+  </div>
+  <div class="feature-card">
+    <div class="feature-icon">📊</div>
+    <div class="feature-title">Detailed Reports</div>
+    <div class="feature-description">Get comprehensive analysis of all methods in your class</div>
+  </div>
+  <div class="feature-card">
+    <div class="feature-icon">⚡</div>
+    <div class="feature-title">Fast Processing</div>
+    <div class="feature-description">Instant bytecode analysis with detailed results</div>
+  </div>
+</div>
+
+<footer>
+  © AjaygowdaH | 
+  <a href="/">Scan Another</a> | 
+  <a href="/">Logout</a>
+</footer>
+
+</div>
+
+<script>
+function updateFileName() {
+  const fileInput = document.getElementById('file');
+  const fileDisplay = document.getElementById('fileDisplay');
+  
+  if (fileInput.files && fileInput.files[0]) {
+    fileDisplay.textContent = '✅ ' + fileInput.files[0].name;
+    fileDisplay.classList.add('file-selected');
+  } else {
+    fileDisplay.textContent = 'No file selected';
+    fileDisplay.classList.remove('file-selected');
+  }
+}
+</script>
+
+</body>
+</html>

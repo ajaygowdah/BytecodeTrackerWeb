@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 450px;
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .logo {
+            text-align: center;
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #667eea;
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.6);
+        }
+        
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .demo-credentials {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .demo-title {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .demo-item {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 8px;
+            padding: 8px;
+            background: white;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .error-msg {
+            display: none;
+            background: #ffebee;
+            color: #d32f2f;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #d32f2f;
+        }
+        
+        .error-msg.show {
+            display: block;
+        }
+        
+        .success-msg {
+            display: none;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .success-msg.show {
+            display: block;
+        }
+        
+        .api-status {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 20px;
+            color: #999;
+        }
+        
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .status-dot.connected {
+            background: #4caf50;
+        }
+        
+        .status-dot.disconnected {
+            background: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">🔐</div>
+        
+        <h1>Welcome Back</h1>
+        <p class="subtitle">Login to your CMS account</p>
+        
+        <div id="successMsg" class="success-msg">✅ Login successful! Redirecting...</div>
+        <div id="errorMsg" class="error-msg"></div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    placeholder="Enter your username"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="Enter your password"
+                    required
+                >
+            </div>
+            
+            <button type="submit" class="login-btn" id="loginBtn">Login</button>
+        </form>
+        
+        <div class="demo-credentials">
+            <div class="demo-title">📌 Demo Credentials</div>
+            <div class="demo-item"><strong>Admin:</strong> admin / admin123</div>
+            <div class="demo-item"><strong>User:</strong> sinchana / user123</div>
+            <div class="demo-item"><strong>User:</strong> john_doe / john123</div>
+        </div>
+        
+        <div class="api-status">
+            <div id="apiStatus">
+                <span class="status-dot disconnected"></span>
+                Checking API connection...
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        
+        // Check API connection
+        function checkAPI() {
+            console.log("Checking API connection...");
+            fetch(API_URL + '/stats')
+                .then(response => {
+                    console.log("API Response:", response);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("API Data:", data);
+                    document.getElementById('apiStatus').innerHTML = 
+                        '<span class="status-dot connected"></span>API Connected ✅';
+                })
+                .catch(error => {
+                    console.log("API Error:", error);
+                    document.getElementById('apiStatus').innerHTML = 
+                        '<span class="status-dot disconnected"></span>API Disconnected ❌';
+                });
+        }
+        
+        // Check API on load
+        window.addEventListener('load', checkAPI);
+        
+        // Handle login
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            const successMsg = document.getElementById('successMsg');
+            const loginBtn = document.getElementById('loginBtn');
+            
+            console.log("Login attempt:", username);
+            
+            errorMsg.classList.remove('show');
+            successMsg.classList.remove('show');
+            
+            try {
+                const response = await fetch(API_URL + '/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+                
+                console.log("Response status:", response.status);
+                const data = await response.json();
+                console.log("Response data:", data);
+                
+                if (data.success) {
+                    // Store user data
+                    localStorage.setItem('user_id', data.user_id);
+                    localStorage.setItem('username', data.username);
+                    localStorage.setItem('role', data.role);
+                    
+                    console.log("Login successful, role:", data.role);
+                    
+                    successMsg.classList.add('show');
+                    loginBtn.disabled = true;
+                    loginBtn.textContent = 'Redirecting...';
+                    
+                    // Redirect after 1 second
+                    setTimeout(() => {
+                        if (data.role === 'admin') {
+                            window.location.href = 'admin_dashboard.html';
+                        } else {
+                            window.location.href = 'user_dashboard.html';
+                        }
+                    }, 1000);
+                } else {
+                    console.log("Login failed:", data.message);
+                    errorMsg.textContent = '❌ ' + data.message;
+                    errorMsg.classList.add('show');
+                }
+            } catch (error) {
+                console.log("Fetch error:", error);
+                errorMsg.textContent = '❌ API Connection Error. Make sure REST API is running on http://localhost:5000!';
+                errorMsg.classList.add('show');
+            }
+        });
+    </script>
+</body>
+</html>

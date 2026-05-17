@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Content - CMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+        
+        nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .nav-logo {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-info {
+            color: white;
+            text-align: right;
+        }
+        
+        .username {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .role-badge {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+        
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .header-subtitle {
+            color: #999;
+            font-size: 16px;
+        }
+        
+        .search-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .search-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .filter-select {
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .content-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: white;
+        }
+        
+        .card-id {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .card-author {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .card-body {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .card-meta {
+            color: #999;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-edit {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .btn-edit:hover {
+            background: #bbdefb;
+            transform: scale(1.05);
+        }
+        
+        .btn-delete {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+        
+        .btn-delete:hover {
+            background: #ffcdd2;
+            transform: scale(1.05);
+        }
+        
+        .pagination {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        
+        .pagination button, .pagination a {
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .pagination button:hover, .pagination a:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+        
+        .pagination .active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            color: #333;
+        }
+        
+        .modal-body {
+            margin-bottom: 25px;
+        }
+        
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-btn-confirm {
+            background: #d32f2f;
+            color: white;
+        }
+        
+        .modal-btn-confirm:hover {
+            background: #b71c1c;
+            transform: scale(1.05);
+        }
+        
+        .modal-btn-cancel {
+            background: #e0e0e0;
+            color: #333;
+        }
+        
+        .modal-btn-cancel:hover {
+            background: #bdbdbd;
+        }
+        
+        footer {
+            background: white;
+            padding: 30px 40px;
+            text-align: center;
+            border-top: 1px solid #eee;
+            margin-top: 60px;
+        }
+        
+        .footer-text {
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .copyright {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            .search-section {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                min-width: 100%;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <div class="nav-logo">📚 CMS</div>
+            <ul class="nav-links">
+                <li><a href="user_dashboard.html">Dashboard</a></li>
+                <li><a href="view_content.html">Content</a></li>
+                <li><a href="add_content.html">Create</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <div class="user-info">
+                <div class="username" id="navUsername">👤 User</div>
+                <div class="role-badge" id="roleBadge">Regular User</div>
+            </div>
+            <a href="profile.html" style="color: white; text-decoration: none; margin: 0 10px; font-weight: 600;">⚙️</a>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="header">
+            <h1>📄 All Content</h1>
+            <p class="header-subtitle">Browse and manage all published content</p>
+        </div>
+        
+        <div class="search-section">
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="🔍 Search by title or keyword..."
+                    onkeyup="filterContent()"
+                >
+            </div>
+            <select class="filter-select" id="sortBy" onchange="filterContent()">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="title">By Title (A-Z)</option>
+            </select>
+            <button class="search-btn" onclick="filterContent()">Search</button>
+        </div>
+        
+        <div class="content-grid" id="contentGrid">
+            <div class="content-card">
+                <div class="card-header">
+                    <div class="card-id">ID: #1</div>
+                    <div class="card-title">Welcome to CMS</div>
+                    <div class="card-author">By: admin</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-description">
+                        This is the first content in our system. A comprehensive guide to get started with our Content Management System.
+                    </div>
+                    <div class="card-meta">
+                        📅 2026-03-23
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn btn-edit" onclick="editContent(1)">✏️ Edit</button>
+                        <button class="action-btn btn-delete" onclick="deleteContent(1)">🗑️ Delete</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <div class="card-header">
+                    <div class="card-id">ID: #2</div>
+                    <div class="card-title">Java Programming</div>
+                    <div class="card-author">By: sinchana</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-description">
+                        Learn Java basics and advanced concepts. Master object-oriented programming and build robust applications.
+                    </div>
+                    <div class="card-meta">
+                        📅 2026-03-23
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn btn-edit" onclick="editContent(2)">✏️ Edit</button>
+                        <button class="action-btn btn-delete" onclick="deleteContent(2)">🗑️ Delete</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <div class="card-header">
+                    <div class="card-id">ID: #3</div>
+                    <div class="card-title">Web Development</div>
+                    <div class="card-author">By: john_doe</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-description">
+                        HTML, CSS, JavaScript fundamentals. Create stunning web pages and interactive user interfaces with modern technologies.
+                    </div>
+                    <div class="card-meta">
+                        📅 2026-03-23
+                    </div>
+                    <div class="card-actions">
+                        <button class="action-btn btn-edit" onclick="editContent(3)">✏️ Edit</button>
+                        <button class="action-btn btn-delete" onclick="deleteContent(3)">🗑️ Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pagination">
+            <a href="#">← Previous</a>
+            <button class="active">1</button>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">Next →</a>
+        </div>
+    </div>
+    
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🗑️ Delete Content</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this content? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="modal-btn modal-btn-confirm" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p class="footer-text">CMS Content Management</p>
+        <p class="copyright">© 2026 Sinchana MS. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        let deleteContentId = null;
+        
+        window.onload = function() {
+            const role = localStorage.getItem('role');
+            const user = localStorage.getItem('user');
+            
+            if (!role) {
+                window.location.href = 'login.html';
+            }
+            
+            if (user) {
+                document.getElementById('navUsername').textContent = '👤 ' + user;
+            }
+            
+            if (role === 'admin') {
+                document.getElementById('roleBadge').textContent = 'Administrator';
+            }
+        }
+        
+        function filterContent() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.content-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                const description = card.querySelector('.card-description').textContent.toLowerCase();
+                
+                if (title.includes(searchInput) || description.includes(searchInput)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        function editContent(contentId) {
+            window.location.href = 'edit_content.html?id=' + contentId;
+        }
+        
+        function deleteContent(contentId) {
+            deleteContentId = contentId;
+            document.getElementById('deleteModal').style.display = 'block';
+        }
+        
+        function confirmDelete() {
+            if (deleteContentId) {
+                alert('✅ Content #' + deleteContentId + ' deleted successfully!');
+                location.reload();
+            }
+        }
+        
+        function closeModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+            deleteContentId = null;
+        }
+        
+        window.onclick = function(event) {
+            const modal = document.getElementById('deleteModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('user');
+                localStorage.removeItem('role');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>
